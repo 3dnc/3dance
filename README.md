@@ -1,1 +1,3 @@
-# 3d dance studio modeling system
+# 3Dance
+
+3D dance studio modeling system.

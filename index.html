@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3Dance — Intelligent Studio Management</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #0a0908;
+      --surface: #141210;
+      --border: #2a2622;
+      --text: #e8e4df;
+      --muted: #8c857c;
+      --accent: #c9a227;
+      --accent-soft: rgba(201, 162, 39, 0.15);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .hero {
+      min-height: 72vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 0 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-soft) 0%, transparent 50%),
+        linear-gradient(180deg, transparent 0%, var(--bg) 100%);
+      pointer-events: none;
+    }
+    .hero .wrap { position: relative; z-index: 1; }
+    .hero .logo {
+      display: block;
+      height: 7rem;
+      width: auto;
+      margin-bottom: 1.5rem;
+    }
+    .hero .kicker {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 1rem;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: clamp(2.75rem, 8vw, 4.5rem);
+      line-height: 1.12;
+      letter-spacing: 0.01em;
+      margin: 0 0 1.25rem;
+      max-width: 14ch;
+    }
+    .hero .tagline {
+      font-size: 1.2rem;
+      color: var(--muted);
+      max-width: 42ch;
+      margin: 0 0 2.5rem;
+      font-weight: 400;
+    }
+    .hero-diagram {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .hero-diagram .tri {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 34px solid var(--border);
+    }
+    .hero-diagram .tri:nth-child(2) { border-bottom-color: var(--accent); }
+    .hero-diagram span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .intro-section {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .intro-section .lead {
+      font-size: 1.35rem;
+      line-height: 1.6;
+      color: var(--text);
+      max-width: 52ch;
+      margin: 0;
+    }
+    .investment-section {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .investment-section .wrap {
+      display: grid;
+      gap: 1.5rem;
+    }
+    @media (min-width: 700px) {
+      .investment-section .wrap {
+        grid-template-columns: 1fr 1.2fr;
+        align-items: start;
+      }
+    }
+    .investment-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin: 0;
+      color: var(--text);
+    }
+    .investment-section .copy {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .investment-section .copy strong { color: var(--text); }
+    .comparison {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem 2rem;
+      margin-top: 1rem;
+    }
+    .comparison-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .comparison-item .value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    .comparison-item .label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .costs-section {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .costs-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin: 0 0 1.5rem;
+      color: var(--text);
+    }
+    .costs-grid {
+      display: grid;
+      gap: 1rem 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+    .costs-grid .item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .costs-grid .value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    .costs-grid .label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .costs-section .note {
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      opacity: 0.9;
+    }
+    .cards {
+      padding: 2rem 0 5rem;
+    }
+    .cards-inner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover {
+      border-color: rgba(201, 162, 39, 0.4);
+      transform: translateY(-2px);
+    }
+    .card .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+    .card h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 0 0 0.6rem;
+      color: var(--text);
+    }
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+    }
+    footer .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    footer .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    footer .logo {
+      height: 1.5rem;
+      width: auto;
+    }
+    footer .legal {
+      font-size: 0.85rem;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <img class="logo" src="assets/3dance-logo.svg" alt="3Dance" width="140" height="40">
+      <p class="kicker">3D Modeling System</p>
+      <h1>Your studio in real time. Every angle. Every dancer.</h1>
+      <p class="tagline">Three wall cameras triangulate the space and every participant—so you get a live 3D view and constant support for safety, choreography, and growth.</p>
+      <div class="hero-diagram">
+        <div class="tri"></div>
+        <div class="tri"></div>
+        <div class="tri"></div>
+        <span>Three cameras → triangulation → full 3D</span>
+      </div>
+    </div>
+  </header>
+  <section class="intro-section">
+    <div class="wrap">
+      <p class="lead">Transform your studio into a smart, data-driven space. One system gives your manager a single, reliable view of the room and everyone in it—so you can focus on teaching and growing your business.</p>
+    </div>
+  </section>
+  <section class="investment-section">
+    <div class="wrap">
+      <div>
+        <h2>Hardware that fits your budget like any other studio essential</h2>
+        <div class="comparison">
+          <div class="comparison-item">
+            <span class="value">$1,500–$3,000</span>
+            <span class="label">typical installed cost for one mirror wall</span>
+          </div>
+          <div class="comparison-item">
+            <span class="value">~$2,000</span>
+            <span class="label">common midpoint studios already spend</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Studios already invest that range for a single mirror wall—one view, no replay, no analytics. Our three-camera setup sits in the same ballpark and gives you <strong>multiple angles</strong>, <strong>recording</strong>, and <strong>live 3D feedback</strong>. Think of it as another core piece of your space: same order of investment, far more capability.</p>
+    </div>
+  </section>
+  <section class="costs-section">
+    <div class="wrap">
+      <h2>What studios actually spend (industry benchmarks)</h2>
+      <div class="costs-grid">
+        <div class="item">
+          <span class="value">$20,000–$25,000/mo</span>
+          <span class="label">Typical monthly operating costs</span>
+        </div>
+        <div class="item">
+          <span class="value">$5,000–$12,000/mo</span>
+          <span class="label">Rent (largest fixed cost)</span>
+        </div>
+        <div class="item">
+          <span class="value">~8% of revenue</span>
+          <span class="label">Marketing (e.g. $2,900–$6,000/mo)</span>
+        </div>
+        <div class="item">
+          <span class="value">$1,500–$3,000</span>
+          <span class="label">One mirror wall installed</span>
+        </div>
+        <div class="item">
+          <span class="value">$20,000–$30,000+</span>
+          <span class="label">Lifetime value per student (with ancillaries)</span>
+        </div>
+        <div class="item">
+          <span class="value">5–7×</span>
+          <span class="label">Cost to acquire a new student vs. keep one</span>
+        </div>
+        <div class="item">
+          <span class="value">~$97,200</span>
+          <span class="label">Average small business liability claim</span>
+        </div>
+        <div class="item">
+          <span class="value">1 in 3</span>
+          <span class="label">Studios underinsured for current claim levels</span>
+        </div>
+      </div>
+      <p class="note">Sources: Financial Models Lab, The Studio Director, DSOA, ClassManager, PR Newswire / insurer data. Retention and documentation reduce risk and preserve revenue.</p>
+    </div>
+  </section>
+  <section class="cards">
+    <div class="wrap cards-inner">
+      <article class="card">
+        <div class="icon">1</div>
+        <h2>Injury prevention & safety</h2>
+        <p>Spot risky movement patterns and alignment issues before they become injuries. Continuous feedback on form and load protects your dancers and reduces liability.</p>
+      </article>
+      <article class="card">
+        <div class="icon">2</div>
+        <h2>Choreography & rehearsal</h2>
+        <p>See formations, spacing, and timing in true 3D. Replay and analyze runs from any angle to refine choreography and give precise, visual direction.</p>
+      </article>
+      <article class="card">
+        <div class="icon">3</div>
+        <h2>Marketing & growth</h2>
+        <p>Turn rehearsals and classes into compelling content. Export camera-ready angles and 3D visualizations to showcase your studio and attract new students.</p>
+      </article>
+      <article class="card">
+        <div class="icon">4</div>
+        <h2>Always-on studio assistant</h2>
+        <p>One reliable view of the space and everyone in it. Less guesswork, fewer blind spots—constant support where it matters most.</p>
+      </article>
+      <article class="card">
+        <div class="icon">5</div>
+        <h2>Load management</h2>
+        <p>See how repetition and physical load spread across the room. Adapt choreography and class design to cut overuse and keep dancers healthier.</p>
+      </article>
+      <article class="card">
+        <div class="icon">6</div>
+        <h2>Progress visibility for families</h2>
+        <p>Share clips and angles with parents so they see real improvement. Build trust and retention with clear, professional progress updates.</p>
+      </article>
+      <article class="card">
+        <div class="icon">7</div>
+        <h2>Documentation & liability</h2>
+        <p>When something happens, you have timestamped 3D context and multiple angles. Back up incident reports and insurance with objective documentation.</p>
+      </article>
+      <article class="card">
+        <div class="icon">8</div>
+        <h2>Competition & audition readiness</h2>
+        <p>See how routines read from every angle—the way judges and panels see them. Polish staging and presentation before the big day.</p>
+      </article>
+      <article class="card">
+        <div class="icon">9</div>
+        <h2>Technique from every angle</h2>
+        <p>Dancers and instructors see alignment and execution from viewpoints mirrors can’t give. Build better technique with 3D feedback.</p>
+      </article>
+      <article class="card">
+        <div class="icon">10</div>
+        <h2>Remote review & feedback</h2>
+        <p>Guest teachers and coaches can review 3D replays without being in the room. Expand your feedback loop and bring in outside eyes when it matters.</p>
+      </article>
+    </div>
+  </section>
+  <footer>
+    <div class="wrap">
+      <span class="brand"><img class="logo" src="assets/3dance-logo.svg" alt="" width="84" height="24"></span>
+      <span class="legal">Modeling system for dance studios</span>
+    </div>
+  </footer>
+</body>
+</html>
