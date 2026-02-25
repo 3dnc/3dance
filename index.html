@@ -257,6 +257,17 @@
       clip-path: none;
       margin: 0;
     }
+    .raw-sync {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .raw-sync video {
+      margin-top:1rem;
+      margin-bottom: 5rem;
+      width: 100%;
+      clip-path: none;
+    }
     .multicam-sync {
       position: relative;
       aspect-ratio: 16 / 10;
@@ -422,6 +433,11 @@
         <span class="video-emoji video-emoji-b">📷</span>
         <span class="video-emoji video-emoji-br">📷</span>
       </div>
+      <h2>Raw</h2>
+      <div class="raw-sync">
+        <video id="raw-cam1" src="poc/data/test_fixtures/real/raw/gBR_sBM_c01_d04_mBR0_ch01.mp4" muted loop playsinline></video>
+        <video id="raw-cam2" src="poc/data/test_fixtures/real/raw/gBR_sBM_c02_d04_mBR0_ch01.mp4" muted loop playsinline></video>
+      </div>
       <h2>Sticks</h2>
       <video src="sticks.mp4" muted autoplay loop playsinline></video>
       <img class="dance-logo" src="assets/3dance-logo.svg" alt="3Dance" width="280" height="105">
@@ -520,5 +536,30 @@
       <span class="legal">Modeling system for dance studios</span>
     </div>
   </footer>
+  <script>
+    (function () {
+      var cam1 = document.getElementById('raw-cam1');
+      var cam2 = document.getElementById('raw-cam2');
+      if (!cam1 || !cam2) return;
+
+      var DRIFT_THRESHOLD = 0.1;
+
+      function startSynced() {
+        cam1.currentTime = 0;
+        cam2.currentTime = 0;
+        cam1.play();
+        cam2.play();
+        setInterval(function () {
+          var drift = Math.abs(cam1.currentTime - cam2.currentTime);
+          if (drift > DRIFT_THRESHOLD) cam2.currentTime = cam1.currentTime;
+        }, 500);
+      }
+
+      Promise.all([
+        new Promise(function (r) { cam1.addEventListener('canplaythrough', r, { once: true }); }),
+        new Promise(function (r) { cam2.addEventListener('canplaythrough', r, { once: true }); })
+      ]).then(startSynced);
+    })();
+  </script>
 </body>
 </html>
