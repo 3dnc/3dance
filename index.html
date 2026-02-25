@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3Dance — Intelligent Studio Management</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon-light.svg" media="(prefers-color-scheme: light)">
+  <link rel="apple-touch-icon" href="assets/icon-192.svg">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
@@ -62,6 +65,12 @@
       width: auto;
       margin-bottom: 1.5rem;
     }
+    .video-section .dance-logo {
+      display: block;
+      height: 10rem;
+      width: auto;
+      margin-top: 2rem;
+    }
     .hero .kicker {
       font-family: 'Syne', sans-serif;
       font-weight: 600;
@@ -74,17 +83,16 @@
     .hero h1 {
       font-family: 'Syne', sans-serif;
       font-weight: 600;
-      font-size: clamp(2.75rem, 8vw, 4.5rem);
+      font-size: 3rem;
       line-height: 1.12;
       letter-spacing: 0.01em;
       margin: 0 0 1.25rem;
-      max-width: 14ch;
     }
     .hero .tagline {
       font-size: 1.2rem;
       color: var(--muted);
       max-width: 42ch;
-      margin: 0 0 2.5rem;
+      margin: 4rem 0;
       font-weight: 400;
     }
     .hero-diagram {
@@ -203,6 +211,109 @@
       color: var(--muted);
       opacity: 0.9;
     }
+    .video-section {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .video-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin: 0 0 1.5rem;
+      color: var(--text);
+    }
+    .video-section h2:not(:first-child) {
+      margin-top: 8rem;
+    }
+    .bullet-time-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: auto 1fr auto;
+      gap: 0.5rem;
+      align-items: center;
+      justify-items: center;
+    }
+    .bullet-time-wrap .video-emoji {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .bullet-time-wrap .video-emoji-tl { grid-column: 1; grid-row: 1; }
+    .bullet-time-wrap .video-emoji-t { grid-column: 2; grid-row: 1; }
+    .bullet-time-wrap .video-emoji-tr { grid-column: 3; grid-row: 1; }
+    .bullet-time-wrap .video-emoji-l { grid-column: 1; grid-row: 2; }
+    .bullet-time-wrap video { grid-column: 2; grid-row: 2; width: 100%; }
+    .bullet-time-wrap .video-emoji-r { grid-column: 3; grid-row: 2; }
+    .bullet-time-wrap .video-emoji-bl { grid-column: 1; grid-row: 3; }
+    .bullet-time-wrap .video-emoji-b { grid-column: 2; grid-row: 3; }
+    .bullet-time-wrap .video-emoji-br { grid-column: 3; grid-row: 3; }
+    .video-section video {
+      width: 100%;
+      opacity: 0.6;
+      clip-path: inset(130px 0 150px 0);
+      margin: -130px 0 -150px 0;
+      display: block;
+    }
+    .video-section video.video-full {
+      clip-path: none;
+      margin: 0;
+    }
+    .multicam-sync {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      max-height: 70vh;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .multicam-sync video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      clip-path: inset(0 0 38px 0);
+      margin: 0;
+      opacity: 1;
+    }
+    .multicam-sync .lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .multicam-sync .lines .line {
+      position: absolute;
+      background: var(--bg);
+    }
+    .multicam-sync .lines .line-v-mid {
+      left: calc(33.333% - 13px);
+      width: 35px;
+      top: 0;
+      bottom: 0;
+    }
+    .multicam-sync .lines .line-h-1 {
+      top: calc(33.333% - 36px);
+      height: 35px;
+      left: 0;
+      width: calc(33.333% - 10px);
+    }
+    .multicam-sync .lines .line-h-2 {
+      top: calc(66.666% - 38px);
+      height: 35px;
+      left: 0;
+      right: 0;
+    }
+    .multicam-sync .lines .line-v-r1 {
+      left: calc(63% - 10px);
+      width: 35px;
+      top: 66%;
+      bottom: 0;
+    }
+    .multicam-sync .lines .line-v-r2 {
+      left: calc(80% - 10px);
+      width: 35px;
+      top: 66%;
+      bottom: 0;
+    }
     .cards {
       padding: 2rem 0 5rem;
     }
@@ -223,8 +334,8 @@
       transform: translateY(-2px);
     }
     .card .icon {
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: 60px;
       border-radius: 10px;
       background: var(--accent-soft);
       color: var(--accent);
@@ -233,7 +344,7 @@
       justify-content: center;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 2.5rem;
       margin-bottom: 1.25rem;
     }
     .card h2 {
@@ -283,9 +394,9 @@
 <body>
   <header class="hero">
     <div class="wrap">
-      <img class="logo" src="assets/3dance-logo.svg" alt="3Dance" width="140" height="40">
+      <img class="logo" src="assets/3dance-logo.svg" alt="3Dance" width="280" height="105">
       <p class="kicker">3D Modeling System</p>
-      <h1>Your studio in real time. Every angle. Every dancer.</h1>
+      <h1>Your studio in real time.<br>Every angle. Every dancer.</h1>
       <p class="tagline">Three wall cameras triangulate the space and every participant—so you get a live 3D view and constant support for safety, choreography, and growth.</p>
       <div class="hero-diagram">
         <div class="tri"></div>
@@ -295,9 +406,35 @@
       </div>
     </div>
   </header>
-  <section class="intro-section">
+  <section class="video-section">
     <div class="wrap">
-      <p class="lead">Transform your studio into a smart, data-driven space. One system gives your manager a single, reliable view of the room and everyone in it—so you can focus on teaching and growing your business.</p>
+      <h2>This is the standard setup in outdoor sports</h2>
+      <video src="football.mp4" muted autoplay loop playsinline></video>
+      <h2>Bullet time</h2>
+      <div class="bullet-time-wrap">
+        <span class="video-emoji video-emoji-tl">📷</span>
+        <span class="video-emoji video-emoji-t">📷</span>
+        <span class="video-emoji video-emoji-tr">📷</span>
+        <span class="video-emoji video-emoji-l">📷</span>
+        <video src="bullet-time.mp4" muted autoplay loop playsinline></video>
+        <span class="video-emoji video-emoji-r">📷</span>
+        <span class="video-emoji video-emoji-bl">📷</span>
+        <span class="video-emoji video-emoji-b">📷</span>
+        <span class="video-emoji video-emoji-br">📷</span>
+      </div>
+      <h2>Sticks</h2>
+      <video src="sticks.mp4" muted autoplay loop playsinline></video>
+      <img class="dance-logo" src="assets/3dance-logo.svg" alt="3Dance" width="280" height="105">
+      <div class="multicam-sync">
+        <video src="output.mp4" muted autoplay loop playsinline></video>
+        <div class="lines">
+          <div class="line line-v-mid"></div>
+          <div class="line line-h-1"></div>
+          <div class="line line-h-2"></div>
+          <div class="line line-v-r1"></div>
+          <div class="line line-v-r2"></div>
+        </div>
+      </div>
     </div>
   </section>
   <section class="investment-section">
@@ -309,112 +446,77 @@
             <span class="value">$1,500–$3,000</span>
             <span class="label">typical installed cost for one mirror wall</span>
           </div>
-          <div class="comparison-item">
-            <span class="value">~$2,000</span>
-            <span class="label">common midpoint studios already spend</span>
-          </div>
         </div>
       </div>
-      <p class="copy">Studios already invest that range for a single mirror wall—one view, no replay, no analytics. Our three-camera setup sits in the same ballpark and gives you <strong>multiple angles</strong>, <strong>recording</strong>, and <strong>live 3D feedback</strong>. Think of it as another core piece of your space: same order of investment, far more capability.</p>
-    </div>
-  </section>
-  <section class="costs-section">
-    <div class="wrap">
-      <h2>What studios actually spend (industry benchmarks)</h2>
-      <div class="costs-grid">
-        <div class="item">
-          <span class="value">$20,000–$25,000/mo</span>
-          <span class="label">Typical monthly operating costs</span>
-        </div>
-        <div class="item">
-          <span class="value">$5,000–$12,000/mo</span>
-          <span class="label">Rent (largest fixed cost)</span>
-        </div>
-        <div class="item">
-          <span class="value">~8% of revenue</span>
-          <span class="label">Marketing (e.g. $2,900–$6,000/mo)</span>
-        </div>
-        <div class="item">
-          <span class="value">$1,500–$3,000</span>
-          <span class="label">One mirror wall installed</span>
-        </div>
-        <div class="item">
-          <span class="value">$20,000–$30,000+</span>
-          <span class="label">Lifetime value per student (with ancillaries)</span>
-        </div>
-        <div class="item">
-          <span class="value">5–7×</span>
-          <span class="label">Cost to acquire a new student vs. keep one</span>
-        </div>
-        <div class="item">
-          <span class="value">~$97,200</span>
-          <span class="label">Average small business liability claim</span>
-        </div>
-        <div class="item">
-          <span class="value">1 in 3</span>
-          <span class="label">Studios underinsured for current claim levels</span>
-        </div>
-      </div>
-      <p class="note">Sources: Financial Models Lab, The Studio Director, DSOA, ClassManager, PR Newswire / insurer data. Retention and documentation reduce risk and preserve revenue.</p>
     </div>
   </section>
   <section class="cards">
     <div class="wrap cards-inner">
       <article class="card">
-        <div class="icon">1</div>
+        <div class="icon">🛡️</div>
         <h2>Injury prevention & safety</h2>
         <p>Spot risky movement patterns and alignment issues before they become injuries. Continuous feedback on form and load protects your dancers and reduces liability.</p>
       </article>
       <article class="card">
-        <div class="icon">2</div>
+        <div class="icon">💃</div>
         <h2>Choreography & rehearsal</h2>
         <p>See formations, spacing, and timing in true 3D. Replay and analyze runs from any angle to refine choreography and give precise, visual direction.</p>
       </article>
       <article class="card">
-        <div class="icon">3</div>
+        <div class="icon">📈</div>
         <h2>Marketing & growth</h2>
         <p>Turn rehearsals and classes into compelling content. Export camera-ready angles and 3D visualizations to showcase your studio and attract new students.</p>
       </article>
       <article class="card">
-        <div class="icon">4</div>
+        <div class="icon">👁️</div>
         <h2>Always-on studio assistant</h2>
         <p>One reliable view of the space and everyone in it. Less guesswork, fewer blind spots—constant support where it matters most.</p>
       </article>
       <article class="card">
-        <div class="icon">5</div>
+        <div class="icon">⚖️</div>
         <h2>Load management</h2>
         <p>See how repetition and physical load spread across the room. Adapt choreography and class design to cut overuse and keep dancers healthier.</p>
       </article>
       <article class="card">
-        <div class="icon">6</div>
+        <div class="icon">👨‍👩‍👧</div>
         <h2>Progress visibility for families</h2>
         <p>Share clips and angles with parents so they see real improvement. Build trust and retention with clear, professional progress updates.</p>
       </article>
       <article class="card">
-        <div class="icon">7</div>
+        <div class="icon">📄</div>
         <h2>Documentation & liability</h2>
         <p>When something happens, you have timestamped 3D context and multiple angles. Back up incident reports and insurance with objective documentation.</p>
       </article>
       <article class="card">
-        <div class="icon">8</div>
+        <div class="icon">🏆</div>
         <h2>Competition & audition readiness</h2>
         <p>See how routines read from every angle—the way judges and panels see them. Polish staging and presentation before the big day.</p>
       </article>
       <article class="card">
-        <div class="icon">9</div>
+        <div class="icon">🔄</div>
         <h2>Technique from every angle</h2>
         <p>Dancers and instructors see alignment and execution from viewpoints mirrors can’t give. Build better technique with 3D feedback.</p>
       </article>
       <article class="card">
-        <div class="icon">10</div>
+        <div class="icon">📹</div>
         <h2>Remote review & feedback</h2>
         <p>Guest teachers and coaches can review 3D replays without being in the room. Expand your feedback loop and bring in outside eyes when it matters.</p>
+      </article>
+      <article class="card">
+        <div class="icon">🎯</div>
+        <h2>Self-practice & replay</h2>
+        <p>Dancers access their own 3D replays between classes to work on technique and ownership. Same angles the teacher sees—practice with intent, not guesswork.</p>
+      </article>
+      <article class="card">
+        <div class="icon">🤝</div>
+        <h2>Accessibility & equal view</h2>
+        <p>Everyone gets the same 3D feedback regardless of where they stand. No more "come to the front to see"—inclusive teaching without favoring one spot in the room.</p>
       </article>
     </div>
   </section>
   <footer>
     <div class="wrap">
-      <span class="brand"><img class="logo" src="assets/3dance-logo.svg" alt="" width="84" height="24"></span>
+      <span class="brand"><img class="logo" src="assets/3dance-logo-muted.svg" alt="" width="168" height="63"></span>
       <span class="legal">Modeling system for dance studios</span>
     </div>
   </footer>

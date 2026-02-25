@@ -16,7 +16,19 @@ Hardware (cameras, NTP, local compute) is **customer-supplied**. Downstream proc
 
 ---
 
-## 2. Logical Layers
+## 2. Technology and Language Stance
+
+The system is **AI-first**: ML (pose, 3D, analytics) is central. There are **no code-language constraints**—use whatever fits each component best.
+
+- **Rust / C** are in scope wherever they add value: ingestion hot path (multi-stream capture, sync, encode), real-time pipelines, FFI to camera or encoder SDKs, low-latency or high-throughput services. Use them when performance, predictability, or integration with C libraries matters.
+- **Python** remains the default for model inference and tooling (PyTorch, ONNX, pose/vision libs), orchestration, APIs, and admin/automation. Interop via subprocess, HTTP/gRPC, or FFI (e.g. PyO3, ctypes) is expected.
+- **Other languages** (e.g. Go, TypeScript for UI) are fine for services or frontends where they are a better fit.
+
+Choose by component: optimize the pipeline and AI stack per layer rather than standardizing on one language.
+
+---
+
+## 3. Logical Layers
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -39,14 +51,14 @@ Hardware (cameras, NTP, local compute) is **customer-supplied**. Downstream proc
 
 ---
 
-## 3. Components
+## 4. Components
 
-### 3.1 Customer environment (out of our scope)
+### 4.1 Customer environment (out of our scope)
 
 - **Cameras**: Studio-supplied; typically three fixed wall cameras with overlapping FOV, consistent frame rate, and some form of time sync (NTP, PTP, or software).
 - **Network / compute**: Studio network and optional on-prem box for running our ingestion or relay. We define requirements; we don’t supply the hardware.
 
-### 3.2 Ingestion (our software)
+### 4.2 Ingestion (our software)
 
 - **Source configuration**: Define camera endpoints (RTSP, USB, SDK, etc.), credentials, and which streams to use. Configured via admin UI.
 - **Capture**: Connect to sources, read frames, attach timestamps; handle reconnection and backpressure.
@@ -54,7 +66,9 @@ Hardware (cameras, NTP, local compute) is **customer-supplied**. Downstream proc
 - **Buffering / pipeline**: Frame buffers, optional encode or thumbnail, and output to our storage or to a defined downstream sink (e.g. object store, processing service).
 - **Session boundary**: Optional concept of “session” (e.g. class start/stop) so data is grouped and retention can apply per session.
 
-### 3.3 Data control (our software)
+Ingestion is a strong candidate for **Rust or C** (or a Rust/C core with a thin API) when we need low-latency capture, hardware encode, or tight sync across many streams.
+
+### 4.3 Data control (our software)
 
 - **Access control**: Identity and roles (e.g. studio admin, instructor, viewer); which users or roles can view live, replay, or export; per-studio isolation.
 - **Retention**: Configurable rules (e.g. keep raw 30 days, then delete or archive); automatic enforcement.
@@ -64,7 +78,7 @@ Hardware (cameras, NTP, local compute) is **customer-supplied**. Downstream proc
 
 All of the above are configurable and operable via the **admin UI** (and backed by an API for automation).
 
-### 3.4 Admin UI (our software)
+### 4.4 Admin UI (our software)
 
 - **Ingestion**: Add/edit/remove sources; set sync and pipeline options; view status (connected, errors, throughput).
 - **Data control**: Configure retention, sharing and export policies, role permissions; view audit and compliance logs.
@@ -73,20 +87,20 @@ All of the above are configurable and operable via the **admin UI** (and backed 
 
 This is the primary interface for “running” the product; other UIs (e.g. instructor view, replay, family portal) can sit on top of the same data control and APIs.
 
-### 3.5 Storage (our software or customer choice)
+### 4.5 Storage (our software or customer choice)
 
 - **Where**: We may operate storage (e.g. per-tenant buckets) or support customer-owned storage; data control policies apply either way.
 - **What**: Ingested streams (raw or encoded), session metadata, calibration if applicable; downstream results if we or a partner write them back.
 - **Lifecycle**: Retention and deletion driven by data control rules; no access without passing access control.
 
-### 3.6 Downstream (optional, not core product)
+### 4.6 Downstream (optional, not core product)
 
-- **Processing**: Calibration, pose, triangulation, 3D, analytics—may be our own services or a partner; they consume data we ingest and are subject to our data control (e.g. who can trigger jobs, where results go).
+- **Processing**: Calibration, pose, triangulation, 3D, analytics—may be our own services or a partner; they consume data we ingest and are subject to our data control (e.g. who can trigger jobs, where results go). **AI-first**: typically Python (PyTorch, ONNX, OpenCV, etc.) or inference runtimes (Triton, TensorRT); Rust/C for latency-critical or embedded inference if needed.
 - **Consumers**: Replay UIs, export tools, family-facing clips—all consume data through our APIs and respect access and retention.
 
 ---
 
-## 4. Data Flow (simplified)
+## 5. Data Flow (simplified)
 
 1. **Setup**: Admin configures camera sources and data-control policies in the admin UI.
 2. **Ingestion**: Our software connects to sources, syncs frames, and writes to storage (or a downstream sink); session boundaries optional.
@@ -96,23 +110,23 @@ This is the primary interface for “running” the product; other UIs (e.g. ins
 
 ---
 
-## 5. Deployment
+## 6. Deployment
 
 - **Our software** can run in our cloud (SaaS), in the customer’s environment (on-prem or their VPC), or hybrid (ingestion on-prem, control and admin in our cloud). Data control and admin UI are always part of the product.
 - **Storage** can be ours or customer-designated; retention and access still enforced by our layer.
 
 ---
 
-## 6. Security & Privacy
+## 7. Security & Privacy
 
 - **Minors**: Studios have minors; treat all ingested data as sensitive. Data control (access, retention, sharing) and audit are core.
 - **TLS** for admin UI, API, and any streams we proxy or expose.
 - **Encryption at rest** for stored data; keys and access under data control.
-- **Retention and sharing** as in section 3.3; time-limited and revocable links; no public indexing.
+- **Retention and sharing** as in section 4.3; time-limited and revocable links; no public indexing.
 
 ---
 
-## 7. Out of Scope (for this doc)
+## 8. Out of Scope (for this doc)
 
 - Camera hardware specs and procurement.
 - Detailed design of downstream processing (pose, 3D, analytics).
@@ -120,7 +134,7 @@ This is the primary interface for “running” the product; other UIs (e.g. ins
 
 ---
 
-## 8. Possible Next Steps
+## 9. Possible Next Steps
 
 1. **Admin UI**: Wireframes and flows for ingestion config, data-control policies, and operational view.
 2. **API**: Contract for source config, session lifecycle, access and retention policies, and audit.
