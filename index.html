@@ -261,6 +261,7 @@
       width: 40%;
       margin: -100px auto 0 auto;
     }
+    #dance-bullet-mid { cursor: pointer; }
     .raw-sync {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -606,6 +607,15 @@
     (function () {
       var el = document.getElementById('dance-bullet-mid');
       if (el) el.playbackRate = 0.7;
+    })();
+    (function () {
+      var video = document.getElementById('dance-bullet-mid');
+      if (!video) return;
+      var inverted = false;
+      video.addEventListener('click', function () {
+        inverted = !inverted;
+        video.style.filter = inverted ? 'invert(1)' : 'none';
+      });
     })();
   </script>
 </body>
