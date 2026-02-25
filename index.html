@@ -463,10 +463,12 @@
         <span class="video-emoji video-emoji-b">📷</span>
         <span class="video-emoji video-emoji-br">📷</span>
       </div>
-      <h2>Raw</h2>
-      <div class="raw-sync">
-        <video id="raw-cam1" src="poc/data/test_fixtures/real/raw/gBR_sBM_c01_d04_mBR0_ch01.mp4" muted autoplay loop playsinline></video>
-        <video id="raw-cam2" src="poc/data/test_fixtures/real/raw/gBR_sBM_c02_d04_mBR0_ch01.mp4" muted autoplay loop playsinline></video>
+      <div class="raw-section">
+        <h2>Raw</h2>
+        <div class="raw-sync">
+          <video id="raw-cam1" src="poc/data/test_fixtures/real/raw/gBR_sBM_c01_d04_mBR0_ch01.mp4" muted autoplay loop playsinline></video>
+          <video id="raw-cam2" src="poc/data/test_fixtures/real/raw/gBR_sBM_c02_d04_mBR0_ch01.mp4" muted autoplay loop playsinline></video>
+        </div>
       </div>
       <h2>Sticks</h2>
       <video src="sticks.mp4" muted autoplay loop playsinline></video>
@@ -576,9 +578,15 @@
   </footer>
   <script>
     (function () {
+      var section = document.querySelector('.raw-section');
       var cam1 = document.getElementById('raw-cam1');
       var cam2 = document.getElementById('raw-cam2');
-      if (!cam1 || !cam2) return;
+      if (!section || !cam1 || !cam2) return;
+      function hideRaw() {
+        section.style.display = 'none';
+      }
+      cam1.addEventListener('error', hideRaw);
+      cam2.addEventListener('error', hideRaw);
       var DRIFT_THRESHOLD = 0.1;
       function startSynced() {
         cam1.currentTime = 0;
