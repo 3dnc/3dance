@@ -257,6 +257,10 @@
       clip-path: none;
       margin: 0;
     }
+    .video-section video.video-dance-ref {
+      width: 40%;
+      margin: -100px auto 0 auto;
+    }
     .raw-sync {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -371,6 +375,32 @@
       color: var(--muted);
       line-height: 1.6;
     }
+    .final-row {
+      grid-column: 1 / -1;
+      margin-top: 1rem;
+      padding: 2rem 2.25rem;
+      background: none;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: none;
+      transform: none;
+    }
+    .final-row:hover {
+      border-color: var(--border);
+      transform: none;
+    }
+    .final-row .icon {
+      display: none;
+    }
+    .final-row h2 {
+      font-size: 1.35rem;
+      margin-bottom: 0.5rem;
+      text-align: right;
+    }
+    .final-row p {
+      font-size: 1.05rem;
+      max-width: 56ch;
+    }
     footer {
       border-top: 1px solid var(--border);
       padding: 2.5rem 0;
@@ -441,7 +471,7 @@
       <h2>Sticks</h2>
       <video src="sticks.mp4" muted autoplay loop playsinline></video>
       <h2>Dance + bullet time</h2>
-      <video class="video-full" src="poc/backend/out_3d_demo/dance_bullet_mid.mp4" muted autoplay loop playsinline></video>
+      <video id="dance-bullet-mid" class="video-full" src="poc/backend/out_3d_demo/dance_bullet_mid.mp4" muted autoplay loop playsinline></video>
       <img class="dance-logo" src="assets/3dance-logo.svg" alt="3Dance" width="280" height="105">
       <div class="multicam-sync">
         <video src="output.mp4" muted autoplay loop playsinline></video>
@@ -453,6 +483,8 @@
           <div class="line line-v-r2"></div>
         </div>
       </div>
+      <h2>Bye Bye Bye</h2>
+      <video class="video-dance-ref" src="pinterest_video_bg_0a0908.mp4" muted autoplay loop playsinline></video>
     </div>
   </section>
   <section class="investment-section">
@@ -530,6 +562,10 @@
         <h2>Accessibility & equal view</h2>
         <p>Everyone gets the same 3D feedback regardless of where they stand. No more "come to the front to see"—inclusive teaching without favoring one spot in the room.</p>
       </article>
+      <article class="card final-row">
+        <h2>🤡 👶 לסנן רק את התמונות של הילד מהווטסאפ של הגן ורק את הפוטוגניות</h2>
+        <p>Filter only your child’s images from the kindergarten WhatsApp—and only the photogenic ones.</p>
+      </article>
     </div>
   </section>
   <footer>
@@ -558,6 +594,10 @@
         new Promise(function (r) { cam1.addEventListener('canplaythrough', r, { once: true }); }),
         new Promise(function (r) { cam2.addEventListener('canplaythrough', r, { once: true }); })
       ]).then(startSynced);
+    })();
+    (function () {
+      var el = document.getElementById('dance-bullet-mid');
+      if (el) el.playbackRate = 0.7;
     })();
   </script>
 </body>
