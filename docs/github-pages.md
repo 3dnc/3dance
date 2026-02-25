@@ -4,10 +4,30 @@ This repo is set up to be served as a static site on GitHub Pages.
 
 ## Enable Pages
 
+### From the web
+
 1. GitHub → repo **Settings** → **Pages**.
 2. **Source**: Deploy from a branch.
 3. **Branch**: default (e.g. `main`), folder **/ (root)**.
 4. Save. The site will be at `https://<username>.github.io/3dance/`.
+
+### From the CLI
+
+Use [GitHub CLI](https://cli.github.com/) (`gh auth login` first). From the repo root:
+
+**Create** (Pages not set up yet):
+
+```bash
+gh api repos/:owner/:repo/pages -X POST -f 'source[branch]=main' -f 'source[path]=/'
+```
+
+**Update** (Pages already exists):
+
+```bash
+gh api repos/:owner/:repo/pages -X PUT -f 'source[branch]=main' -f 'source[path]=/'
+```
+
+Replace `main` with your default branch if different. Run from the repo directory so `:owner` and `:repo` are resolved by `gh` from the current repo.
 
 ## What gets served
 
