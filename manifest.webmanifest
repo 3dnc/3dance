@@ -2,7 +2,7 @@
   "name": "3Dance",
   "short_name": "3Dance",
   "description": "Intelligent Studio Management — 3D modeling system for dance studios",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#0a0908",
   "theme_color": "#0a0908",
