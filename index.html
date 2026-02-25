@@ -435,8 +435,8 @@
       </div>
       <h2>Raw</h2>
       <div class="raw-sync">
-        <video id="raw-cam1" src="poc/data/test_fixtures/real/raw/gBR_sBM_c01_d04_mBR0_ch01.mp4" muted loop playsinline></video>
-        <video id="raw-cam2" src="poc/data/test_fixtures/real/raw/gBR_sBM_c02_d04_mBR0_ch01.mp4" muted loop playsinline></video>
+        <video id="raw-cam1" src="poc/data/test_fixtures/real/raw/gBR_sBM_c01_d04_mBR0_ch01.mp4" muted autoplay loop playsinline></video>
+        <video id="raw-cam2" src="poc/data/test_fixtures/real/raw/gBR_sBM_c02_d04_mBR0_ch01.mp4" muted autoplay loop playsinline></video>
       </div>
       <h2>Sticks</h2>
       <video src="sticks.mp4" muted autoplay loop playsinline></video>
@@ -541,9 +541,7 @@
       var cam1 = document.getElementById('raw-cam1');
       var cam2 = document.getElementById('raw-cam2');
       if (!cam1 || !cam2) return;
-
       var DRIFT_THRESHOLD = 0.1;
-
       function startSynced() {
         cam1.currentTime = 0;
         cam2.currentTime = 0;
@@ -554,7 +552,6 @@
           if (drift > DRIFT_THRESHOLD) cam2.currentTime = cam1.currentTime;
         }, 500);
       }
-
       Promise.all([
         new Promise(function (r) { cam1.addEventListener('canplaythrough', r, { once: true }); }),
         new Promise(function (r) { cam2.addEventListener('canplaythrough', r, { once: true }); })
